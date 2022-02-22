@@ -7,6 +7,8 @@ library(RColorBrewer)
 
 library("readxl")
 
+#setwd("/Users/kibar/Desktop/QuasiIDRFinder/")
+
 my_data_metapredict <- read_excel("./Dataset/MasterTable_canonicalHuman_qIDR.xlsx")
 
 thre=0.001
@@ -18,8 +20,6 @@ my_data_metapredict_top$`min(p-val)`[which(my_data_metapredict_top$`min(p-val)`<
 
 highlight_df_3 <- my_data_metapredict_top %>% 
   filter(my_data_metapredict_top$overlap_metapredict  =="yes" )
-
-#plot
 
 blues <- brewer.pal(9, "Blues")
 blue_range <- colorRampPalette(blues)
@@ -37,8 +37,7 @@ my_data_all_qIDRs=my_data_metapredict
 my_data_all_qIDRs$`min(p-val)`[which(my_data_all_qIDRs$`min(p-val)`< thre)]=thre
 
 
-keys <- read.csv(file = '/Dataset/HG30_pep_annotation.csv')
-
+keys <- read.csv(file = './Dataset/HG30_pep_annotation.csv')
 TFnames <- read.table("./Dataset/annotations/TF_IDs.txt",header = F)
 PLDs <- read.table("./Dataset/annotations/PLD_IDs.txt",header = F)
 Pld_99 <- read_excel("./Dataset/annotations/PLD_99p.xlsx")
@@ -69,7 +68,6 @@ ratio <- with(my_data_all_qIDRs, diff(range(-log10(`min(p-val)`)))/diff(c(90,300
 ##all qIDRs density
 ggplot(my_data_all_qIDRs, aes(x=-log10(`min(p-val)`), y= `length_IDR(qIDR)`) ) + 
   geom_density2d_filled(bins=9) +ylim(90,300)+scale_fill_manual(values = blue_range(11))+ theme_classic()+ggtitle("all IDRs with significant periodicity")+ coord_fixed(ratio=ratio)+theme(legend.title = element_text( size=9), legend.text=element_text(size=7))+xlab(expression(-log[10]~(p-value)))+ylab("Length (amino acids)") # for the x axis label
-
 
 
 
